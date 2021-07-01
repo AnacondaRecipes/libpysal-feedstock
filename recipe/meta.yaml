@@ -49,8 +49,11 @@ test:
 about:
   home: http://pysal.org
   license: BSD-3-Clause
+  license_family: BSD
   license_file: LICENSE.txt
   summary: Core components of PySAL A library of spatial analysis functions
+  dev_url: https://github.com/pysal/libpysal
+  doc_url: https://pysal.org/libpysal/
 
 extra:
   recipe-maintainers:
