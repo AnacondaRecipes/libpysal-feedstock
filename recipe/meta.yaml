@@ -21,7 +21,7 @@ requirements:
     - wheel
   run:
     - python
-    - beautifulsoup4
+    - beautifulsoup4 >=4.10
     - scipy >=1.8
     - numpy >=1.22
     - pandas >=1.4
@@ -30,7 +30,7 @@ requirements:
     - requests >=2.27
     - shapely >=2.0.1
     - scikit-learn >=1.1
-    - geopandas
+    - geopandas >=0.10.0
 
 test:
   imports:
