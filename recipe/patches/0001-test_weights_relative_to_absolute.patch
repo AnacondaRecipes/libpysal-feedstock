@@ -1,0 +1,37 @@
+From 7f4f8343abbfe70a993275f318817635af6910cb Mon Sep 17 00:00:00 2001
+From: Udo-Peter Steyer <ous8292@gmail.com>
+Date: Thu, 30 May 2024 12:44:15 -0500
+Subject: [PATCH] test_weights_relative_to_absolute
+
+---
+ libpysal/weights/tests/test_weights.py | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/libpysal/weights/tests/test_weights.py b/libpysal/weights/tests/test_weights.py
+index 0b860500..40990641 100644
+--- a/libpysal/weights/tests/test_weights.py
++++ b/libpysal/weights/tests/test_weights.py
+@@ -7,13 +7,13 @@ import numpy as np
+ import pytest
+ import scipy.sparse
+ 
+-from ... import examples
+-from ...io.fileio import FileIO
+-from .. import util
+-from ..contiguity import Rook
+-from ..distance import KNN
+-from ..util import WSP2W, lat2W
+-from ..weights import WSP, W, _LabelEncoder
++from libpysal import examples
++from libpysal.io.fileio import FileIO
++from libpysal.weights import util
++from libpysal.weights.contiguity import Rook
++from libpysal.weights.distance import KNN
++from libpysal.weights.util import WSP2W, lat2W
++from libpysal.weights.weights import WSP, W, _LabelEncoder
+ 
+ 
+ class TestW:
+-- 
+2.39.3 (Apple Git-146)
+

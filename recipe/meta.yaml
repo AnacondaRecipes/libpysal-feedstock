@@ -7,16 +7,19 @@ package:
 source:
   url: https://pypi.io/packages/source/l/libpysal/libpysal-{{ version }}.tar.gz
   sha256: 4d3127802c7c06289ffb211d10202dd8d14b10039a81249920769ce4b987e3b5
+  patches:
+    - patches/0001-test_weights_relative_to_absolute.patch
 build:
   number: 0
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
   skip: True  # [py<310 or s390x]
 
 requirements:
+  build:
+    - patch
   host:
     - python
     - pip
-    - pytest-runner
     - setuptools
     - wheel
   run:
@@ -33,6 +36,8 @@ requirements:
     - geopandas >=0.10.0
 
 test:
+  source_files:
+    - libpysal/weights/tests/test_weights.py
   imports:
     - libpysal
     - libpysal.cg
@@ -46,8 +51,15 @@ test:
     - libpysal.weights
   commands:
     - pip check
+      # smoke test on omly test weight due to the rest of the test using all relative imports to the source code.
+      # skipping test_plot due to reading a datafile, importing matplotlib and warnings causing overall test to fail.
+    - pytest libpysal/weights/tests/test_weights.py -k "not test_plot"
   requires:
     - pip
+    - pytest
+    - numpy
+    - scipy
+    - geopandas
 
 about:
   home: https://pysal.org
