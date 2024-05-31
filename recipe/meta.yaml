@@ -36,6 +36,13 @@ requirements:
     - shapely >=2.0.1
     - scikit-learn >=1.1
     - geopandas >=0.10.0
+  run_constrained:
+    - joblib >=1.2
+    - networkx >=2.7
+    - numba >=0.55
+    - pyarrow >=7.0
+    - sqlalchemy >=2.0
+    - xarray >=2022.3
 
 test:
   source_files:
