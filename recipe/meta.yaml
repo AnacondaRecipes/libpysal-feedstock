@@ -47,6 +47,7 @@ requirements:
 test:
   source_files:
     - libpysal/weights/tests/test_weights.py
+    - pyproject.toml
   imports:
     - libpysal
     - libpysal.cg
@@ -63,7 +64,6 @@ test:
       # smoke test on omly test weight due to the rest of the test using all relative imports to the source code.
       # skipping test_plot due to reading a datafile, importing matplotlib and warnings causing overall test to fail.
     - pytest libpysal/weights/tests/test_weights.py -k "not test_plot"
-    - pyproject.toml
   requires:
     - pip
     - pytest
