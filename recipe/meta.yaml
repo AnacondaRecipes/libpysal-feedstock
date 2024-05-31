@@ -10,9 +10,11 @@ source:
   patches:
     - patches/0001-test_weights_relative_to_absolute.patch
 build:
-  number: 0
+  number: 1
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
   skip: True  # [py<310 or s390x]
+  script_env:
+    - SETUPTOOLS_SCM_PRETEND_VERSION={{ version }}
 
 requirements:
   build:
