@@ -1,24 +1,27 @@
+{% set name = "libpysal" %}
 {% set version = "4.10" %}
 
 package:
-  name: libpysal
+  name: {{ name }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/l/libpysal/libpysal-{{ version }}.tar.gz
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
   sha256: 4d3127802c7c06289ffb211d10202dd8d14b10039a81249920769ce4b987e3b5
   patches:
     - patches/0001-test_weights_relative_to_absolute.patch
+
 build:
-  number: 1
+  number: 2
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
+  # libpysal upstream moved on to py310, using the new typing system
   skip: True  # [py<310 or s390x]
   script_env:
     - SETUPTOOLS_SCM_PRETEND_VERSION={{ version }}
 
 requirements:
   build:
-    - patch  # [not win]
+    - patch     # [not win]
     - m2-patch  # [win]
   host:
     - python
@@ -61,9 +64,15 @@ test:
     - libpysal.io.tests
     - libpysal.io.util
     - libpysal.weights
+    - libpysal.common
   commands:
     - pip check
-      # smoke test on omly test weight due to the rest of the test using all relative imports to the source code.
+      # check that pip gets the correct version 
+    - python -c "from importlib.metadata import version; assert(version('{{ name }}')=='{{ version }}')"
+    - python -c "from libpysal.examples import summary; print(summary())"
+    - python -c "from libpysal.examples import available; print(available())"
+    - python -c "from libpysal.examples import get_path; example_path = get_path('10740.shp'); assert(example_path is not None)"
+      # smoke test on only test weight due to the rest of the test using all relative imports to the source code.
       # skipping test_plot due to reading a datafile, importing matplotlib and warnings causing overall test to fail.
     - pytest libpysal/weights/tests/test_weights.py -k "not test_plot"
   requires:
