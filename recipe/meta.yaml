@@ -12,7 +12,7 @@ source:
     - patches/0001-test_weights_relative_to_absolute.patch
 
 build:
-  number: 0
+  number: 1
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
   # libpysal upstream moved on to py311, using the new typing system
   skip: True  # [py<311]
