@@ -97,3 +97,6 @@ about:
 extra:
   recipe-maintainers:
     - ocefpaf
+  skip-lints:
+    - missing_pip_check  # anaconda-linter internal crash on this recipe (reproduces on master); `pip check` IS present in test.commands
+    - missing_test_requirement_pip  # anaconda-linter internal crash on this recipe (reproduces on master); `pip` IS present in test.requires
