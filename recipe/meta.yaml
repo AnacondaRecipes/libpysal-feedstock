@@ -1,21 +1,20 @@
 {% set name = "libpysal" %}
-{% set version = "4.14.1" %}
+{% set version = "4.15.0" %}
 
 package:
   name: {{ name }}
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 84a0a832178e57b54f7da35f1c3385c1eaf99016ec8ff819add3b89d36aaff1c
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: db9eee1579678a2eec6974c831dc93abf612a4df5a3c45e9d7ed35ea5f9e2497
   patches:
     - patches/0001-test_weights_relative_to_absolute.patch
 
 build:
-  number: 1
+  number: 0
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
-  # libpysal upstream moved on to py311, using the new typing system
-  skip: True  # [py<311]
+  skip: true  # [py<312]
   script_env:
     - SETUPTOOLS_SCM_PRETEND_VERSION={{ version }}
 
@@ -23,28 +22,33 @@ requirements:
   host:
     - python
     - pip
-    - setuptools
-    - setuptools_scm
+    - setuptools >=61.0
+    - setuptools_scm >=6.2
+    - toml
     - wheel
   run:
     - python
     - beautifulsoup4 >=4.13.0
-    - scipy >=1.12
-    - numpy >=1.26.0
-    - pandas >=2.1.0
-    - packaging >=23.2
-    - platformdirs >=3.11.0
+    - geopandas >=1.1.0
+    - jinja2
+    - numpy >=2.0.0
+    - packaging >=24.1
+    - pandas >=2.3.0
+    - platformdirs >=4.3
     - requests >=2.32.0
-    - shapely >=2.0
-    - scikit-learn >=1.4.0
-    - geopandas >=0.14.0
+    - scikit-learn >=1.5.0
+    - scipy >=1.14.0
+    - shapely >=2.1
   run_constrained:
-    - joblib >=1.2
-    - networkx >=2.7
-    - numba >=0.55
-    - pyarrow >=7.0
+    - joblib >=1.5.0
+    - networkx >=3.4
+    - numba >=0.60
+    - pandarm >=0.0
+    - pulp <4
+    - pyarrow >=16.1
     - sqlalchemy >=2.0
-    - xarray >=2022.3
+    - xarray >=2024.5
+    - zstd
 
 test:
   source_files:
@@ -71,7 +75,7 @@ test:
     - python -c "from libpysal.examples import get_path; example_path = get_path('10740.shp'); assert(example_path is not None)"
       # smoke test on only test weight due to the rest of the test using all relative imports to the source code.
       # skipping test_plot due to reading a datafile, importing matplotlib and warnings causing overall test to fail.
-    - pytest libpysal/weights/tests/test_weights.py -k "not test_plot"
+    - pytest -vv libpysal/weights/tests/test_weights.py -k "not test_plot"
   requires:
     - pip
     - pytest
@@ -93,3 +97,6 @@ about:
 extra:
   recipe-maintainers:
     - ocefpaf
+  skip-lints:
+    - missing_pip_check  # anaconda-linter internal crash on this recipe (reproduces on master); `pip check` IS present in test.commands
+    - missing_test_requirement_pip  # anaconda-linter internal crash on this recipe (reproduces on master); `pip` IS present in test.requires
